@@ -7,6 +7,10 @@ class EmployeeService {
     getEmployees() {
         return axois.get(EMPLOYEE_API_BASE_URL + '/employees');
     }
+
+    createEmployee(employee) {
+        return axois.post(EMPLOYEE_API_BASE_URL + '/employees', employee);
+    }
 }
 
 export default new EmployeeService()
