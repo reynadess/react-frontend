@@ -9,6 +9,8 @@ class ListEmployeeComponent extends Component {
         }
 
         this.addEmployee = this.addEmployee.bind(this);
+        this.refreshEmployee = this.refreshEmployee.bind(this);
+        this.editEmployee = this.editEmployee.bind(this);
     }
 
     componentDidMount() {
@@ -21,11 +23,30 @@ class ListEmployeeComponent extends Component {
         this.props.history.push('/add-employee')
     }
 
+    refreshEmployee() {
+        employeeService.getEmployees().then((res)=> {
+            this.setState({employees:res.data});
+        });
+    }
+
+    editEmployee(id){
+        this.props.history.push(`/update-employee/${id}`);
+    }
+
     render() {
         return (
             <> 
                 <h2 className="display-5">Employees List</h2>
-                <button className="btn btn-primary" onClick={this.addEmployee}>Add Employee</button>
+                <div className="container">
+                    <div className="row">
+                    <button className="btn btn-primary col-md-2" onClick={this.addEmployee}>Add Employee</button>
+                    <div className="col-md-4"></div>
+                    <div className="col-md-4"></div>
+                    <button type="button" className="btn btn-outline-secondary btn-sm col-md-2" onClick={this.refreshEmployee}>
+                        <span className="glyphicon glyphicon-refresh"></span> Refresh
+                    </button>
+                    </div>
+                </div>
                 <table className="table table-bordered">
                 <thead className="thead-dark">
                     <tr>
@@ -50,6 +71,9 @@ class ListEmployeeComponent extends Component {
                                     <td>{employees.dateOfBirth}</td>
                                     <td>{employees.baseSalary}</td>
                                     <td>{employees.employeeStatus}</td>
+                                    <td>
+                                        <button className="btn btn-info" onClick={() => this.editEmployee(employees.id)}>Update</button>
+                                    </td>
                                 </tr>
                             )
                     }

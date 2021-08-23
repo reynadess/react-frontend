@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import ListEmployeeComponent from './Components/ListEmployeeComponent';
 import AddEmployeeComponent from './Components/AddEmployeeComponent';
 import HeaderComponent from './Components/HeaderComponent';
+import UpdateEmployeeComponent from './Components/UpdateEmployeeComponent';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
             <Route exact path="/" component = {ListEmployeeComponent}></Route>
             <Route path="/employees" component = {ListEmployeeComponent}></Route>
             <Route path="/add-employee" component = {AddEmployeeComponent}></Route>
+            <Route path="/update-employee/:id" component = {UpdateEmployeeComponent}></Route>
           </Switch> 
         </div>
       </Router>

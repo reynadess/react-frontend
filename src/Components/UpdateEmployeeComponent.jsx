@@ -1,18 +1,18 @@
 import React, { Component } from 'react'
 import EmployeeService from '../services/EmployeeService';
 
-export default class AddEmployeeComponent extends Component {
+export default class UpdateEmployeeComponent extends Component {
     constructor(props) {
         super(props)
     
         this.state = {
-            id:null,
+            id:this.props.match.params.id,
             email:"",
             name:"",
-            role:"EMPLOYEE",
+            role:"",
             dateOfBirth: "",
-            baseSalary: 10000,
-            employeeStatus :"ACTIVE"
+            baseSalary: 0,
+            employeeStatus :""
         }
 
         this.changeEmailHandler = this.changeEmailHandler.bind(this);
@@ -20,7 +20,22 @@ export default class AddEmployeeComponent extends Component {
         this.changeRoleHandler = this.changeRoleHandler.bind(this);
         this.changeDateOfBirthHandler = this.changeDateOfBirthHandler.bind(this);
         this.changeBaseSalaryHandler = this.changeBaseSalaryHandler.bind(this);
-        this.saveEmployee = this.saveEmployee.bind(this)
+        this.changeEmployeeStatusHandler = this.changeEmployeeStatusHandler.bind(this);
+        this.updateEmployee = this.updateEmployee.bind(this)
+    }
+
+    componentDidMount() {
+        EmployeeService.getEmployeeById(this.state.id).then((res)=> {
+            let employee = res.data;
+            this.setState({
+                email: employee.email,
+                name: employee.name,
+                role: employee.role,
+                dateOfBirth: employee.dateOfBirth,
+                baseSalary: employee.baseSalary,
+                employeeStatus: employee.employeeStatus
+            })
+        });        
     }
 
     changeEmailHandler(event) {
@@ -41,12 +56,16 @@ export default class AddEmployeeComponent extends Component {
 
     changeBaseSalaryHandler(event) {
         this.setState({baseSalary: event.target.value});
-    }       
+    }      
 
-    saveEmployee(event) {
+    changeEmployeeStatusHandler(event) {
+        this.setState({employeeStatus: event.target.value});
+    }   
+
+    updateEmployee(event) {
         event.preventDefault();
         let employee = {
-            id: null,
+            id: this.state.id,
             email:this.state.email,
             name:this.state.name,
             role:this.state.role,
@@ -56,9 +75,9 @@ export default class AddEmployeeComponent extends Component {
         }
         console.log("Employee=>" + JSON.stringify(employee))
 
-        EmployeeService.createEmployee(employee).then(
+        EmployeeService.updateEmployee(employee).then(
             res=>{
-                this.props.history.push('/employees')
+                this.props.history.push(`/`);
             }
         )
     }
@@ -66,14 +85,14 @@ export default class AddEmployeeComponent extends Component {
     cancel() {
         this.props.history.push('/employees');
     }
-    
+
     render() {
         return (
             <div>
                 <div className = "container">
                     <div className ="row">
                         <div className="card col-md-6 offset-md-3 offset-md-3">
-                            <h3 className="text-center">Add Employee</h3>
+                            <h3 className="text-center">Update Employee</h3>
                             <div className="card-body">
                                 <form>
                                     <div className="form-group">
@@ -106,14 +125,21 @@ export default class AddEmployeeComponent extends Component {
                                         <input type="number" placeholder="Base Salary" name="baseSalary" className="form-control"
                                          value={this.state.baseSalary} onChange={this.changeBaseSalaryHandler} step="0.01" min="10000"/>
                                     </div>
+                                    <div className="form-group">
+                                        <label>Employee Status:</label>
+                                        <select className="form-select" aria-label="Default select example" value={this.state.employeeStatus} onChange={this.changeEmployeeStatusHandler}>
+                                            <option value="ACTIVE">ACTIVE</option>
+                                            <option value="INACTIVE">INACTIVE</option>
+                                        </select>                                        
+                                    </div>                                    
                                     <br />
-                                    <button type="button" className="btn btn-success" onClick={this.saveEmployee}>Save</button>
+                                    <button type="button" className="btn btn-success" onClick={this.updateEmployee}>Update</button>
                                     <button type="button" className="btn btn-danger" onClick={this.cancel.bind(this)} style={{marginLeft: "10px"}}>Cancel</button>
                                 </form>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>                
             </div>
         )
     }
