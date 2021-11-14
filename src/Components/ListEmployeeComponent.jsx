@@ -11,6 +11,7 @@ class ListEmployeeComponent extends Component {
         this.addEmployee = this.addEmployee.bind(this);
         this.refreshEmployee = this.refreshEmployee.bind(this);
         this.editEmployee = this.editEmployee.bind(this);
+        this.deleteEmployee = this.deleteEmployee.bind(this);
     }
 
     componentDidMount() {
@@ -31,6 +32,11 @@ class ListEmployeeComponent extends Component {
 
     editEmployee(id){
         this.props.history.push(`/update-employee/${id}`);
+    }
+
+    async deleteEmployee(id) {
+        await employeeService.deleteEmployee(id);
+        this.refreshEmployee();
     }
 
     render() {
@@ -73,6 +79,7 @@ class ListEmployeeComponent extends Component {
                                     <td>{employees.employeeStatus}</td>
                                     <td>
                                         <button className="btn btn-info" onClick={() => this.editEmployee(employees.id)}>Update</button>
+                                        <button className="btn btn-danger" onClick={() => this.deleteEmployee(employees.id)}>Delete</button>
                                     </td>
                                 </tr>
                             )

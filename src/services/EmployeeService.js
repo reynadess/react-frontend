@@ -1,3 +1,4 @@
+import axios from 'axios';
 import axois from 'axios';
 
 const EMPLOYEE_API_BASE_URL = "http://localhost:8080/api/v1";
@@ -18,6 +19,10 @@ class EmployeeService {
 
     updateEmployee(employee) {
         return axois.put(EMPLOYEE_API_BASE_URL + '/employees/'+ employee.id, employee);
+    }
+
+    deleteEmployee(id) {
+        return axios.delete(EMPLOYEE_API_BASE_URL + `/employees/${id}`);
     }
 }
 
