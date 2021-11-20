@@ -4,6 +4,7 @@ import ListEmployeeComponent from "./Components/ListEmployeeComponent";
 import AddEmployeeComponent from "./Components/AddEmployeeComponent";
 import HeaderComponent from "./Components/HeaderComponent";
 import UpdateEmployeeComponent from "./Components/UpdateEmployeeComponent";
+import NotFoundComponent from "./Components/NotFoundComponent";
 
 function App() {
   return (
@@ -22,6 +23,8 @@ function App() {
               path="/update-employee/:id"
               component={UpdateEmployeeComponent}
             ></Route>
+            <Route exact path="/error" component={NotFoundComponent}></Route>
+            <Route path="*" component={NotFoundComponent}></Route>
           </Switch>
         </div>
       </Router>

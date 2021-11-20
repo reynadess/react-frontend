@@ -12,7 +12,8 @@ export default class UpdateEmployeeComponent extends Component {
             role:"",
             dateOfBirth: "",
             baseSalary: 0,
-            employeeStatus :""
+            employeeStatus :"",
+            error:""
         }
 
         this.changeEmailHandler = this.changeEmailHandler.bind(this);
@@ -35,6 +36,8 @@ export default class UpdateEmployeeComponent extends Component {
                 baseSalary: employee.baseSalary,
                 employeeStatus: employee.employeeStatus
             })
+        }).catch((err) => {
+            this.props.history.push('/error', {error: err.response.data});
         });        
     }
 

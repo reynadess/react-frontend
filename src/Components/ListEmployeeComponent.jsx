@@ -5,7 +5,8 @@ class ListEmployeeComponent extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            employees:[]
+            employees:[],
+            errorMessage: ''
         }
 
         this.addEmployee = this.addEmployee.bind(this);
@@ -17,7 +18,11 @@ class ListEmployeeComponent extends Component {
     componentDidMount() {
         employeeService.getEmployees().then((res)=> {
             this.setState({employees:res.data});
-        });
+        }).catch((val) => {
+                this.setState({errorMessage: val});
+                console.log(this.state.errorMessage);
+            }
+        );
     }
 
     addEmployee() {
